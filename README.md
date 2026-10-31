@@ -17,7 +17,14 @@ user. You land straight on the other desktop.
 
 ## Install
 
-Download `SwitchUser.exe` from the [latest release](../../releases/latest) and run:
+With [winget](https://learn.microsoft.com/windows/package-manager/):
+
+```
+winget install Feridoun.SwitchUser
+switch-user install
+```
+
+Or download `SwitchUser.exe` from the [latest release](../../releases/latest) and run:
 
 ```
 SwitchUser.exe install
