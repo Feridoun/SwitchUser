@@ -1,0 +1,13 @@
+SwitchUser switches between signed-in Windows users without asking for a password.
+
+Ctrl+Alt+U           switch to the other signed-in user
+Ctrl+Alt+Shift+U     pick a user
+Tray icon            left-click to switch, right-click to pick
+
+It installs a small Windows service (SwitchUserSvc) that runs as SYSTEM, and a tray icon that starts for every user when they sign in.
+
+Please read before installing:
+
+Because no password is needed, anyone sitting at this PC can reach every account that is signed in, with a single keypress. Only install SwitchUser on a PC where all the accounts are yours. Don't install it on a shared or family computer where accounts are meant to be private.
+
+To remove it, uninstall SwitchUser from Settings > Apps > Installed apps. That removes the service, the tray icon and the startup entry.

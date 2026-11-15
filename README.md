@@ -21,25 +21,24 @@ With [winget](https://learn.microsoft.com/windows/package-manager/):
 
 ```
 winget install Feridoun.SwitchUser
-switch-user install
 ```
 
-Or download `SwitchUser.exe` from the [latest release](../../releases/latest) and run:
+Or download `SwitchUser-Setup-<version>.exe` from the [latest release](../../releases/latest) and
+run it.
 
-```
-SwitchUser.exe install
-```
-
-This asks for admin rights once (UAC), copies itself to `C:\Program Files\SwitchUser\`, registers
-the `SwitchUserSvc` service and a per-user Run entry, and starts the tray icon in every session
+Setup asks for admin rights once (UAC), installs to `C:\Program Files\SwitchUser\`, registers the
+`SwitchUserSvc` service and a Run entry for all users, and starts the tray icon in every session
 that is already signed in. The first switch to an account that isn't signed in yet drops you at the
 sign-in screen; pick its tile once, and from then on switching both ways is instant.
 
-To remove everything:
+To remove everything, uninstall **SwitchUser** from Settings > Apps > Installed apps, or run
+`winget uninstall Feridoun.SwitchUser`. This removes the service, the Run entry and every user's
+tray icon as well as the files.
 
-```
-SwitchUser.exe uninstall
-```
+### Without the installer
+
+The release also has `SwitchUser.exe` on its own. Run `SwitchUser.exe install` to set it up the
+same way, and `SwitchUser.exe uninstall` to remove it.
 
 ## How it works
 
@@ -66,7 +65,9 @@ Needs Visual Studio 2019+ with the "Desktop development with C++" workload.
 build.cmd
 ```
 
-Produces `SwitchUser.exe`. Released builds are code-signed with a Certum certificate.
+Produces `SwitchUser.exe`. `toolselease.ps1 -Version <version>` also builds the installer (needs
+[Inno Setup 6](https://jrsoftware.org/isinfo.php)) into `build\dist`, code-signed with a Certum
+certificate.
 
 ## License
 

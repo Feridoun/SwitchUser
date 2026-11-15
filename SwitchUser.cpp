@@ -5,6 +5,8 @@
 //   SwitchUser.exe service      the SYSTEM service that actually moves sessions onto the screen
 //   SwitchUser.exe install      copy to Program Files, register the service and Run key (asks for UAC)
 //   SwitchUser.exe uninstall    remove all of the above
+//   SwitchUser.exe unregister   remove the service and Run entry but leave the files (for the
+//                               setup program's uninstaller, which deletes the files itself)
 //   SwitchUser.exe toggle       switch once and exit (for scripts / shortcuts)
 //
 // Only SYSTEM can bring another user's session to the console without their password
@@ -342,13 +344,18 @@ static int DoInstall() {
     return 0;
 }
 
-static int DoUninstall() {
+static void DoUnregister() {
     SC_HANDLE scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_ALL_ACCESS);
     if (scm) {
         StopAndDeleteService(scm);
         CloseServiceHandle(scm);
     }
     RegDeleteKeyValueW(HKEY_LOCAL_MACHINE, kRunKey, kRunValue);
+    Log(L"unregistered");
+}
+
+static int DoUninstall() {
+    DoUnregister();
     MoveAsideAndDelete(InstalledExe());
     RemoveDirectoryW(InstallDir().c_str());
     Log(L"uninstalled");
@@ -565,6 +572,7 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE, LPWSTR, int) {
     if (arg == L"uninstall") return InstallOrUninstall(false);
     if (arg == L"install-elevated") return DoInstall();
     if (arg == L"uninstall-elevated") return DoUninstall();
+    if (arg == L"unregister") return IsElevated() ? (DoUnregister(), 0) : 1;
     if (arg == L"toggle") {
         std::wstring reply = CallService(L"TOGGLE");
         if (reply.rfind(L"ERR ", 0) == 0) MessageBoxW(nullptr, reply.substr(4).c_str(), L"SwitchUser", MB_ICONWARNING);

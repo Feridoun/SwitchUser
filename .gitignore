@@ -4,3 +4,6 @@
 *.old
 *.pdb
 *.ilk
+
+# Release output (toolselease.ps1)
+build/
